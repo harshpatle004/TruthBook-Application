@@ -7,13 +7,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -38,9 +42,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.truthbook.R
+import com.example.truthbook.data.models.Post
 import com.example.truthbook.data.models.Story
 import com.example.truthbook.features.auth.TextPrimary
 import com.example.truthbook.features.home.components.AddStoryItem
+import com.example.truthbook.features.home.components.PostCard
 import com.example.truthbook.features.home.components.StoryItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,8 +104,14 @@ fun HomeScreen() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
+                    .padding(
+                        bottom = WindowInsets.navigationBars
+                            .asPaddingValues()
+                            .calculateBottomPadding()
+                    )
             ) {
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -207,6 +219,13 @@ fun HomeScreen() {
             Story("4", "Noah", "")
         )
 
+        val posts = listOf(
+            Post("1", "Emma", "", "Beautiful day 🌸", R.drawable.ic_post, "2 min ago", 10, 2),
+            Post("2", "Liam", "", "Working hard 💻", R.drawable.ic_home, "10 min ago", 5, 1),
+            Post("3", "Ava", "", "Travel vibes ✈️", R.drawable.ic_launcher_background
+                , "1 hr ago", 20, 5)
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -233,6 +252,16 @@ fun HomeScreen() {
                     }
                     items(stories) { story ->
                         StoryItem(name = story.name)
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+
+                LazyColumn(
+
+                ) {
+
+                    items(posts) { post ->
+                        PostCard(post = post)
                     }
                 }
             }
