@@ -32,8 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+
 import androidx.compose.ui.unit.dp
 
 import androidx.compose.ui.Modifier
@@ -58,6 +61,8 @@ import com.example.truthbook.features.auth.TextPrimary
 fun HomeScreen(){
 
     Scaffold(
+        modifier = Modifier
+        .background(Color(0xFFF8F6FF)),
         topBar = {
             Box(
                 modifier = Modifier
@@ -66,21 +71,40 @@ fun HomeScreen(){
             ) {
                 Text(
                     "TruthBook",
-                    fontSize = 30.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Italic,
                     fontFamily = FontFamily.Cursive,
-                    color = TextPrimary
+                    color = TextPrimary,
+                    modifier = Modifier.align(Alignment.Center)
                 )
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_notification),
-                    contentDescription = "Notification",
+                Box(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .size(24.dp),
-                    tint = Color.Black
-                )
+                        .size(44.dp)
+                        .background(
+                            color = Color(0xFFF3F0FF),
+                            shape = RoundedCornerShape(14.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_notification),
+                        contentDescription = "Notification",
+                        tint = Color(0xFF7B4BFF),
+                        modifier = Modifier.size(20.dp)
+                    )
+
+                    // Red dot
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .background(Color.Red, CircleShape)
+                            .align(Alignment.TopEnd)
+                    )
+                }
             }
         },
 
