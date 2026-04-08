@@ -44,11 +44,13 @@ import com.example.truthbook.features.home.components.AddStoryItem
 import com.example.truthbook.features.home.components.HomeTopBar
 import com.example.truthbook.features.home.components.PostCard
 import com.example.truthbook.features.home.components.StoryItem
+import androidx.compose.foundation.clickable
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onProfileClick: () -> Unit
+) {
 
     val stories = listOf(
         Story("1", "Emma", ""),
@@ -147,10 +149,13 @@ fun HomeScreen() {
                         }
 
                         // Profile
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                            .clickable { onProfileClick() }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_profile),
                                 contentDescription = "Profile",
+
                                 tint = Color.Gray
                             )
                             Text("Profile", fontSize = 12.sp, color = Color.Gray)

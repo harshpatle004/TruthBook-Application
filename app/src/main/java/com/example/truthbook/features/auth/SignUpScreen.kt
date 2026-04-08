@@ -24,6 +24,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -38,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.truthbook.R
+import com.example.truthbook.data.TokenDataStore
 import com.example.truthbook.data.models.SendOtpRequest
 import com.example.truthbook.data.models.EmailRequest
 import com.example.truthbook.data.models.SetPasswordRequest
@@ -74,6 +76,8 @@ private fun InputField(
     trailingContent: @Composable (() -> Unit)? = null
 ) {
     val shape = RoundedCornerShape(50.dp)
+
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text          = label,
@@ -392,6 +396,7 @@ fun SignUpScreen(
 ) {
     val scope      = rememberCoroutineScope()
     val totalSteps = 4
+    val context = LocalContext.current
     var currentStep by remember { mutableStateOf(1) }
 
     var isLoading    by remember { mutableStateOf(false) }
@@ -1027,9 +1032,11 @@ fun SignUpScreen(
                                     )
                                     if (response.isSuccessful) {
                                         val token = response.body()?.token
-                                        Log.d("SIGNUP", "Account created! Token: $token")
-                                        // TODO: save token → SharedPreferences or DataStore
+                                        if (token != null) {
+                                            TokenDataStore.saveToken(context, token)
+                                        }
                                         onSignUpComplete()
+
                                     } else {
                                         val errorBody = response.errorBody()?.string()
                                         Log.e("SIGNUP_STEP4", "Code: ${response.code()} Body: $errorBody")
